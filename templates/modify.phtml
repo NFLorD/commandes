@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modification</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Nouvelle entrée</title>
+    <style>
+        form>div{
+            width: 100%;
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        label{
+            width: 20%;
+        }
+
+        input{
+            width: 70%;
+            align-self: flex-end;
+        }
+
+        button{
+            align-self: flex-end;
+        }
+
+        form button{
+            margin: 30px auto 0;
+        }
+
+
+    </style>
+</head>
+<body>
+        <section class="hero is-success">
+            <div class="hero-body">
+                <div class="columns">
+                    <div style="margin-left:45px" class="column">
+                            <h1 class="title">
+                                Modification d'une commande
+                            </h1>
+                            <h2 class="subtitle">
+                                Renseignez les nouvelles informations de la commande.
+                            </h2>
+                    </div>
+                    <div style="margin-right:45px" class="column">
+                        <div style="justify-content: flex-end; align-items: center;" class="navbar">
+                            <form action="orderdetails.php" method="post">
+                                <input style="display:none" type="text" name="orderNumber" id="orderNumber" value="<?=$orderNumber?>">
+                                <button href="index.php" class="button is-info">Retour à la commande</a>
+                            </form>
+                        </div>
+                    </div>
+                    <div style="" class="column">
+                        <div style="justify-content: flex-end; align-items: center;" class="navbar">
+                            <a href="index.php" class="button is-danger">Retour à la liste</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section" style="margin: 0 auto;">
+            <article class="box">
+                <form method="post" action="addConfirm.php" style="display: flex; flex-flow: row wrap; width: 90%; margin: 0 auto;">
+                    <div class="control">
+                        <label for="customerName">Nom du client :</label>
+                        <input type="text">
+                    </div>
+                    <div class="control">
+                        <label for="productCode">Code du produit :</label>
+                        <input type="text">
+                    </div>
+                    <div class="control">
+                        <label for="quantityOrdered">Nombre :</label>
+                        <input type="text">
+                    </div>
+                    <div class="control">
+                        <label for="priceEach">Prix unitaire :</label>
+                        <input type="text">
+                    </div>
+                    <div class="control">
+                        <button class="button is-success" type="submit">Modifier</button>
+                    </div>  
+                </form>
+            </article>
+        </section>
+</body>
+</html>
+</body>
+</html>

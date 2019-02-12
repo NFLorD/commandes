@@ -5,8 +5,10 @@ $submit = !empty($_POST);
 if ($submit) {
     if (!empty($_POST['secretInput'])) {
         $orderNumber = $_POST['secretInput'];
+        $orderNumber = intval($orderNumber, 10);
     } else {
         $orderNumber = $_POST['search'];
+        $orderNumber = intval($orderNumber, 10);
     }
 }
 
@@ -34,7 +36,6 @@ if ($submit) {
 
 // ctype_digit($orderNumber) -> true 
 // is_int($orderNumber) -> false
-$orderNumber = intval($orderNumber, 10);
 // is_int($orderNumber) -> true
 
 // Connexion DB
