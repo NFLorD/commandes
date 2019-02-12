@@ -38,7 +38,7 @@ $orderNumber = intval($orderNumber, 10);
 // is_int($orderNumber) -> true
 
 // Connexion DB
-$DB = new PDO("mysql:host=localhost;dbname=classicmodels;charset=utf8;", "root", "troiswa");
+$DB = new PDO("mysql:host=localhost;dbname=classicmodels;charset=utf8;", "root", "");
 
 // Query INFOS GENERALES de la commande
 $sql = "SELECT o.orderDate, c.customerName, c.contactLastName, c.contactFirstName, e.lastName, e.firstName, ROUND(SUM(od.quantityOrdered * od.priceEach),2) AS totalOfTotals
@@ -53,7 +53,7 @@ $query->execute(array(':oNumber' => $orderNumber));
 $data = $query->fetch(PDO::FETCH_ASSOC);
 
 $test = $query->rowCount();
-var_dump($test);
+// var_dump($test);
 
 // Query DETAILS de la commande
 $sql = "SELECT productCode, quantityOrdered, priceEach, ROUND((quantityOrdered * priceEach),2) AS total, p.productName
@@ -69,6 +69,8 @@ $details = $query->fetchAll(PDO::FETCH_ASSOC);
 $query = null;
 $DB = null;
 
+
+$authorizationLevel = 3;
 // header("Location: index.php");
 // exit();
 // die();

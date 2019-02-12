@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <title>Liste des commandes</title>
+    <style>
+        label{
+            margin-left: 3px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,7 +26,7 @@
                                 Liste des commandes
                             </h1>
                             <h2 class="subtitle">
-                                Voici la liste de vos commandes !
+                                Page <?=$page?>
                             </h2>
                     </div>
                     <div style="margin-right:45px" class="column">
@@ -65,13 +70,14 @@
                             <label for="numberOfResults">50</label>
                             <input type="radio" name="numberOfResults" id="50" value="50" <?php if ($numberOfResults == 50) : ?>checked<?php endif ?>>
                         </div>
+                        <input type="number" name="pageInput" id="pageInput" style="display:none" value="<?=$page?>">
                     </form>
                 </div>
                 <div class="is-one-quarter">
                     <div class="column"><button id="next" name="next" class="button is-info">Suivant <i style="margin-left:5px" class="fas fa-caret-right"></i></button></div>
                 </div>
             </div>
-            <table class="table is-fullwidth is-striped is-hoverable">
+            <table class="table is-fullwidth is-striped is-hoverable" style="margin-bottom: 0px">
                 <thead>
                     <tr>
                         <th>Numéro</th>
@@ -86,7 +92,7 @@
                 <tbody> 
                     <?php foreach ($data as $obj) : ?>
                         <tr>
-                            <td><a href="#"><?= $obj['orderNumber'] ?></a></td>
+                            <td><a href="#" class="commandLink"><?= $obj['orderNumber'] ?></a></td>
                             <td><?= $obj['orderDate'] ?></td>
                             <td><?= $obj['shippedDate'] ?></td>
                             <td><?= $obj['status'] ?></td>
@@ -95,31 +101,35 @@
                             <td><?= number_format($obj['totalAmount'], 2, ',', ' ') ?></td>
                         </tr>
                     <?php endforeach ?>
+                        <tr>
+                            <td style="text-align: right;" colspan="7"><a href="addCommand.php">Ajouter une commande</a></td>
+                        </tr>
                 </tbody>
             </table>
-            <hr style="border: 1px solid lightgray">
+            <hr style="border: 1px solid lightgray; margin-top : 5px;">
             <div class="columns">
                 <div class="is-left">
-                    <div class="column is-one-quarter"><button id="previous" name="previous" class="button is-info"><i style="margin-right:5px" class="fas fa-caret-left"></i> Précédent</button></div>
+                    <div class="column is-one-quarter"><button id="previousBottom" name="previousBottom" class="button is-info"><i style="margin-right:5px" class="fas fa-caret-left"></i> Précédent</button></div>
                 </div>
                 <div class="column is-one-half" style="display: flex; justify-content: center; align-items: center">
-                    <form method="post" action="" id="page" style="width: 100%; text-align: center; margin: 0 auto">
+                    <div id="page" style="width: 100%; text-align: center; margin: 0 auto">
                         Pages:
-                        <?php for ($i = 1; $i <= 326 / $numberOfResults + 1; $i++) : ?>    
-                            <a class="page" <?php if ($i == $page) : ?>style="color: gray; text-decoration: underline"<?php endif ?> href="#"><?= $i ?></a>
-                        <?php endfor ?>
-                        <input type="number" name="pageInput" id="pageInput" style="display:none">
-                    </form>
+                        <?php for ($i = 1; $i <= intval(ceil(326/$numberOfResults),10); $i++) : ?>
+                            <?php if($i === 1 || $i === 2 || ($i > $page -4 && $i < $page + 4) || $i === intval(ceil(326/$numberOfResults),10)-1 || $i === intval(ceil(326/$numberOfResults),10)): ?><a class="page" <?php if ($i == $page) : ?>style="color: gray; text-decoration: underline"<?php endif ?> href="#"><?= $i ?></a> 
+                            <?php elseif($i === 3 || $i === intval(ceil(326/$numberOfResults),10) - 2): ?>...
+                            <?php endif ?>
+                        <?php endfor ?>                     
+                    </div>
                 </div>
                 <div class="is-right">
-                    <div class="column is-one-quarter"><button id="next" name="next" class="button is-info">Suivant <i style="margin-left:5px" class="fas fa-caret-right"></i></button></div>
+                    <div class="column is-one-quarter"><button id="nextBottom" name="nextBottom" class="button is-info">Suivant <i style="margin-left:5px" class="fas fa-caret-right"></i></button></div>
                 </div>
             </div>
         </section>
         <form id="hiddenForm" style="position: absolute; left:-8000px;" action="orderdetails.php" method="POST">
             <input id="secretInput" name="secretInput" type="number">
         </form>
-        <script src="js/script.js"></script>
+        <script src="js/index.js"></script>
     </main>
 </body>
 </html>

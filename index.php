@@ -47,7 +47,7 @@ if (!empty($_POST['pageInput'])) {
 }
 
 // Connexion à la DB
-$DB = new PDO("mysql:host=localhost;dbname=classicmodels;charset=utf8;", "root", "troiswa");
+$DB = new PDO("mysql:host=localhost;dbname=classicmodels;charset=utf8;", "root", "");
 
 $sql = "SELECT o.orderNumber, o.orderDate, o.shippedDate, o.status, c.customerName, e.lastName, e.firstName, ROUND(SUM(od.priceEach * od.quantityOrdered),2) AS totalAmount
 FROM orders AS o
@@ -74,7 +74,6 @@ $data = $query->fetchAll(PDO::FETCH_ASSOC);
 // Fin de la connexion
 $query = null;
 $DB = null;
-
 // Appel au template HTML
 require_once("templates/orders.phtml");
 ?>
