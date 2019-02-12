@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+    <title>Commande : <?= $orderNumber ?></title>
+</head>
+<body>
+    <?php if (!empty($data)) : ?>
+    <section class="hero is-info">
+        <div class="hero-body">
+            <div class="columns">
+                <div style="margin-left:45px" class="column">
+                    <h1 class="title">
+                        Détails de la commande n°<?= $orderNumber ?>
+                    </h1>
+                    <h2 class="subtitle">
+                        Commande passée le <?= $data['orderDate'] ?> par <?= $data['customerName'] ?>
+                    </h2>
+                </div>
+                <div style="margin-right:45px" class="column">
+                    <div style="justify-content: flex-end;" class="navbar">
+                        <form class="card panel-block" action="orderdetails.php" method="POST">
+                            <input class="input" type="number" name="search" id="search" value="<?= $orderNumber ?>">
+                            <button class="button" type="submit">Rechercher</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-4">
+                    <article class="box">
+                        <h2 class="subtitle">
+                            Détails du client
+                        </h2>
+                        <strong>Nom :</strong> <?= $data['customerName'] ?><br>
+                        <strong>Contact :</strong> <?= $data['contactLastName'] . " " . $data['contactFirstName'] ?><br>
+                        <strong>Représentant commercial :</strong> <?= $data['lastName'] . " " . $data['firstName'] ?><br>
+                    </article>   
+                </div> 
+                <div class="column">
+                    <article class="box">
+                        <h2 class="subtitle">
+                            Détails de la commande
+                        </h2>
+                        <table class="table is-hoverable is-fullwidth is-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                    <th>Quantité</th>
+                                    <th>Prix unitaire (€)</th>
+                                    <th>Montant total (€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($details as $obj) : ?>
+                                    <tr>
+                                        <td><?= $obj['productCode'] ?></td>
+                                        <td><?= $obj['productName'] ?></td>
+                                        <td><?= $obj['quantityOrdered'] ?></td>
+                                        <td><?= $obj['priceEach'] ?></td>
+                                        <td><?= number_format($obj['total'], 2, ',', ' ') ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="has-text-weight-bold has-text-right">Total :</td>
+                                    <td><?= number_format($data['totalOfTotals'], 2, ',', ' ') ?> €</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <a href="index.php" class="button is-link" style="margin-left:83.5%">Retour à la liste</a>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php else : ?>
+        <section class="section" style="display:flex; align-items: center; height: 100vh">
+                <div class="card" style="width: 20%; height: 10vh; margin: 0 auto">
+                    <div class="card-content" style="text-align:center">
+                        <p>Cette commande n'existe pas.</p>
+                        <a href="index.php">Retour à la liste</a>
+                    </div>
+                </div>
+        </section>
+    <?php endif ?>
+</body>
+</html>

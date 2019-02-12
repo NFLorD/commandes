@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>Liste des commandes</title>
+</head>
+<body>
+    <header>
+        <h1></h1>
+    </header>
+    <main>
+        <section class="hero is-info">
+            <div class="hero-body">
+                <div class="columns">
+                    <div style="margin-left:45px" class="column">
+                            <h1 class="title">
+                                Liste des commandes
+                            </h1>
+                            <h2 class="subtitle">
+                                Voici la liste de vos commandes !
+                            </h2>
+                    </div>
+                    <div style="margin-right:45px" class="column">
+                        <div style="justify-content: flex-end;" class="navbar">
+                            <form class="card panel-block" action="orderdetails.php" method="POST">
+                                <input class="input" type="number" name="search" id="search" placeholder="Numéro de commande">
+                                <button class="button" type="submit">Rechercher</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="columns">
+                <div class="column is-one-quarter"><button id="previous" name="previous" class="button is-info"><i style="margin-right:3px" class="fas fa-caret-left"></i> Précédent</button></div>
+                
+                <div class="column">
+                    <form class="columns" method="post" id="orderForm">
+                        <div class="column">
+                        Trier par : 
+                            <select name="orderSelector" id="orderSelector">
+                                <option value="orderNumber">Numéro</option>
+                                <option <?php if ($order == "orderDate") : ?>selected<?php endif ?> value="orderDate">Date</option>
+                                <option <?php if ($order == "totalAmount") : ?>selected<?php endif ?> value="totalAmount">Montant</option>
+                                <option <?php if ($order == "customerName") : ?>selected<?php endif ?> value="customerName">Client</option>
+                                <option <?php if ($order == "lastName") : ?>selected<?php endif ?> value="lastName">Commercial</option>
+                                <option <?php if ($order == "status") : ?>selected<?php endif ?> value="status">Statut</option>
+                            </select>
+                            <select name="orderDirection" id="orderDirection">
+                                <option value="ASC">Ascendant</option>
+                                <option <?php if ($orderDirection == "DESC") : ?>selected<?php endif ?> value="DESC">Descendant</option>
+                            </select>
+                        </div>
+                        <div class="column">
+                            Nombre de résultats par page : 
+                            <label for="numberOfResults">10</label>
+                            <input type="radio" name="numberOfResults" id="10" value="10" <?php if ($numberOfResults == 10) : ?>checked<?php endif ?>>
+                            <label for="numberOfResults">25</label>
+                            <input type="radio" name="numberOfResults" id="25" value="25" <?php if ($numberOfResults == 25) : ?>checked<?php endif ?>>
+                            <label for="numberOfResults">50</label>
+                            <input type="radio" name="numberOfResults" id="50" value="50" <?php if ($numberOfResults == 50) : ?>checked<?php endif ?>>
+                        </div>
+                    </form>
+                </div>
+                <div class="is-one-quarter">
+                    <div class="column"><button id="next" name="next" class="button is-info">Suivant <i style="margin-left:5px" class="fas fa-caret-right"></i></button></div>
+                </div>
+            </div>
+            <table class="table is-fullwidth is-striped is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Numéro</th>
+                        <th>Date de commande</th>
+                        <th>Date d'expédition</th>
+                        <th>Statut</th>
+                        <th>Client</th>
+                        <th>Commercial</th>
+                        <th>Montant (€)</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <?php foreach ($data as $obj) : ?>
+                        <tr>
+                            <td><a href="#"><?= $obj['orderNumber'] ?></a></td>
+                            <td><?= $obj['orderDate'] ?></td>
+                            <td><?= $obj['shippedDate'] ?></td>
+                            <td><?= $obj['status'] ?></td>
+                            <td><?= $obj['customerName'] ?></td>
+                            <td><?= $obj['lastName'] . " " . $obj['firstName'] ?></td>
+                            <td><?= number_format($obj['totalAmount'], 2, ',', ' ') ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+            <hr style="border: 1px solid lightgray">
+            <div class="columns">
+                <div class="is-left">
+                    <div class="column is-one-quarter"><button id="previous" name="previous" class="button is-info"><i style="margin-right:5px" class="fas fa-caret-left"></i> Précédent</button></div>
+                </div>
+                <div class="column is-one-half" style="display: flex; justify-content: center; align-items: center">
+                    <form method="post" action="" id="page" style="width: 100%; text-align: center; margin: 0 auto">
+                        Pages:
+                        <?php for ($i = 1; $i <= 326 / $numberOfResults + 1; $i++) : ?>    
+                            <a class="page" <?php if ($i == $page) : ?>style="color: gray; text-decoration: underline"<?php endif ?> href="#"><?= $i ?></a>
+                        <?php endfor ?>
+                        <input type="number" name="pageInput" id="pageInput" style="display:none">
+                    </form>
+                </div>
+                <div class="is-right">
+                    <div class="column is-one-quarter"><button id="next" name="next" class="button is-info">Suivant <i style="margin-left:5px" class="fas fa-caret-right"></i></button></div>
+                </div>
+            </div>
+        </section>
+        <form id="hiddenForm" style="position: absolute; left:-8000px;" action="orderdetails.php" method="POST">
+            <input id="secretInput" name="secretInput" type="number">
+        </form>
+        <script src="js/script.js"></script>
+    </main>
+</body>
+</html>
