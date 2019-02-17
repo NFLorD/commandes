@@ -31,7 +31,13 @@
             margin: 30px auto 0;
         }
 
+        #info .control{
+            width: 33%;
+        }
 
+        .hidden{
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -54,24 +60,74 @@
                 </div>
             </div>
         </section>
+        <?php if(!empty($_POST)): ?>
+            <section><p class="hero is-warning" style="text-indent: 10px">Votre commande a bien été ajoutée.</p></section>
+        <?php endif ?>
         <section class="section" style="margin: 0 auto;">
             <article class="box">
-                <form method="post" action="addConfirm.php" style="display: flex; flex-flow: row wrap; width: 90%; margin: 0 auto;">
-                    <div class="control">
-                        <label for="customerName">Nom du client :</label>
-                        <input type="text">
+                <form method="post" action="" style="display: flex; flex-flow: row wrap; width: 90%; margin: 0 auto;">
+                    <div id="info">
+                        <div class="control">
+                            <label for="customerNumber">Numéro du client :</label>
+                            <input name="customerNumber" type="number">
+                        </div>
+                        <div class="control">
+                            <label for="orderNumber">Numéro de commande :</label>
+                            <input name="orderNumber" type="number">
+                        </div>
+                        <div class="control">
+                            <label for="orderDate">Date de commande :</label>
+                            <input name="orderDate" type="date">
+                        </div>
+                        <div class="control">
+                            <label for="requiredDate">Date requise de reception :</label>
+                            <input name="requiredDate" type="date">
+                        </div>
+                        <div class="control">
+                            <label for="status">Statut :</label>
+                            <select name="status" id="status">
+                                <option selected value="In Process">En préparation</option>
+                                <option value="Shipped">Envoyée</option>
+                                <option value="On hold">En attente</option>
+                                <option value="Disputed">En litige</option>
+                                <option value="Resolved">Résolue</option>
+                                <option value="Cancelled">Annulée</option>
+                            </select>
+                        </div>
+                        <div id="shippedDate" class="control hidden">
+                            <label for="shippedDate">Date d'envoi :</label>
+                            <input name="shippedDate" type="date">
+                        </div>
+                        <div class="control">
+                            <label for="comments">Commentaires :</label>
+                            <input name="comments" type="text">
+                        </div>
+                        <div class="control">
+                            <label for="numberOfProducts">Nombre de produits commandés :</label>
+                            <button id="plus">+</button>
+                            <input id="nb" name="numberOfProducts" type="number" value="1" style="width: 25px">
+                            <button id="minus">-</button>
+                        </div>
                     </div>
-                    <div class="control">
-                        <label for="productCode">Code du produit :</label>
-                        <input type="text">
-                    </div>
-                    <div class="control">
-                        <label for="quantityOrdered">Nombre :</label>
-                        <input type="text">
-                    </div>
-                    <div class="control">
-                        <label for="priceEach">Prix unitaire :</label>
-                        <input type="text">
+                    <div id="products" style="flex-wrap: wrap">
+                        <div class="product" style="width:33%; margin-bottom: 25px">
+                            <div class="control">
+                                <label for="productCode">Code de produit :</label>
+                                <input name="productCode[]" type="text">
+                            </div>
+                            <div class="control">
+                                <label for="quantityOrdered">Quantité commandée :</label>
+                                <input name="quantityOrdered[]" type="number">
+                            </div>
+                            <div class="control">
+                                <label for="priceEach">Prix unitaire de vente :</label>
+                                <input name="priceEach[]" type="number" step="0.01">
+                            </div>
+                            <div class="control">
+                                <label for="orderLineNumber">Numéro de ligne du produit :</label>
+                                <input name="orderLineNumber[]" type="number">
+                            </div>
+                        </div>
                     </div>
                     <div class="control">
                         <button class="button is-info" type="submit">Ajouter</button>
@@ -79,5 +135,65 @@
                 </form>
             </article>
         </section>
+        <script>
+            const list = document.getElementById("products");
+            const nb = document.getElementById("nb");
+
+            function read(){
+                list.innerHTML = "";
+                for(let i = 0; i < nb.value; i++){
+                    list.innerHTML += `<div class="product" style="width:33%; margin-bottom: 25px;">
+                            <div class="control">
+                                <label for="productCode">Code de produit :</label>
+                                <input name="productCode[]" type="text">
+                            </div>
+                            <div class="control">
+                                <label for="quantityOrdered">Quantité commandée :</label>
+                                <input name="quantityOrdered[]" type="number">
+                            </div>
+                            <div class="control">
+                                <label for="priceEach">Prix unitaire de vente :</label>
+                                <input name="priceEach[]" type="number" step="0.01">
+                            </div>
+                            <div class="control">
+                                <label for="orderLineNumber">Numéro de ligne du produit :</label>
+                                <input name="orderLineNumber[]" type="number">
+                            </div>
+                        </div>`;
+                }
+            }
+
+            nb.addEventListener("change", read);
+
+            const plus = document.getElementById("plus");
+            const minus = document.getElementById("minus");
+
+            plus.addEventListener("click", function(e){
+                e.preventDefault();
+                nb.value++;
+                read();
+            });
+
+            minus.addEventListener("click", function(e){
+                e.preventDefault();
+                if(nb.value > 0){
+                    nb.value--;
+                    read();
+                }
+            })
+
+            const shipDate = document.getElementById("shippedDate");
+            const status = document.getElementById("status");
+
+            status.addEventListener("change", function(e){
+                if(e.srcElement.value == "Shipped"){
+                    shipDate.classList.remove("hidden");
+                    console.log(shipDate.style);
+                } else {
+                    shipDate.classList.add("hidden");
+                }
+            })
+
+        </script>
 </body>
 </html>
