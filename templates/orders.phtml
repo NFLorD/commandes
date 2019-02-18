@@ -14,9 +14,18 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1></h1>
-    </header>
+        <?php if(empty($_SESSION)): ?>
+        <section class="hero is-info" style="height: 100vh; text-align: center;">
+            <div class="hero-body">
+                <form action="connect.php" method="POST">
+                    <label for="id">Identifiant : </label><input type="text" id="id" name="id">
+                    <label for="password">Mot de passe : </label><input type="password" id="password" name="password">
+                    <input type="submit" value="Connexion">
+                </form>
+                <!-- <a href="signup.php">M'inscrire</a> -->
+            </div>
+        </section>
+    <?php else:?>
     <main>
         <section class="hero is-info">
             <div class="hero-body">
@@ -129,6 +138,7 @@
         <form id="hiddenForm" style="position: absolute; left:-8000px;" action="orderdetails.php" method="POST">
             <input id="secretInput" name="secretInput" type="number">
         </form>
+        <?php endif ?>
         <script src="js/index.js"></script>
     </main>
 </body>

@@ -12,12 +12,13 @@ if(!empty($_POST)){
     var_dump($data);
 
     $DB = connect("localhost", "classicmodels", "root", "");
-    $sql = "INSERT INTO orders (orderNumber, orderDate, requiredDate, shippedDate, `status`, `comments`, customerNumber) VALUES (':oN', ':oD', ':rD', ':sD' ':s', ':c', ':cN')";
+    $sql = "INSERT INTO orders VALUES (':oN', ':oD', ':rD', ':sD', ':s', ':c', ':cN')";
     $query = $DB->prepare($sql);
     $query->execute(array(":oN" => $data["orderNumber"], ":oD" => $data["orderDate"], ":rD" => $data["requiredDate"], ":sD" => $data["shippedDate"], ":s" => $data["status"], ":c" => $data["comments"], ":cN" => $data["customerNumber"]));
+   
     $query = null;
 
-    $sql = "INSERT INTO orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber) VALUES (':oN', ':pC', ':qO', ':pE', ':oLN')";
+    $sql = "INSERT INTO orderdetails VALUES (':oN', ':pC', ':qO', ':pE', ':oLN')";
     for($i = 0; $i < $data['numberOfProducts']; $i++){
         $query = $DB->prepare($sql);
         $query->execute(array(
@@ -33,6 +34,8 @@ if(!empty($_POST)){
 
     $DB = null;
 }
+
+// https://dba.stackexchange.com/questions/46410/how-do-i-insert-a-row-which-contains-a-foreign-key
 
 require_once("templates/add.phtml");
 ?>
